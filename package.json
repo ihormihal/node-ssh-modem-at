@@ -1,0 +1,22 @@
+{
+  "name": "ssh-modem-at",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run connect"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ihormihal/node-ssh-modem-at.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ihormihal/node-ssh-modem-at/issues"
+  },
+  "homepage": "https://github.com/ihormihal/node-ssh-modem-at#readme",
+  "dependencies": {
+    "node-ssh": "^6.0.0"
+  }
+}
