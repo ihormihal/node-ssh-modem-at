@@ -7,8 +7,8 @@ function handleErrors(response) {
 
 Vue.component('App', {
     template: `<main>
-        <Login v-if="!connected" />
-        <Info :info="info" v-if="connected" />
+        <!--Login v-if="!connected" /-->
+        <Info :info="info" />
         <div v-if="loading" class="page-loader">
             <div class="spinner">
                 <div class="double-bounce1"></div>
@@ -20,7 +20,7 @@ Vue.component('App', {
         return {
             connected: false,
             loading: false,
-            info: null
+            info: {"RAT":"WCDMA","MCC":"255","MNC":"06","ARFCN":"10612","PSC":"149","CELL_ID":"47B7E57","LAC":"3459","RSCP":"-73","RXLEV":"-63","EC_N0":"-10","DRX":"6","URA":"6"}
         }
     },
     mounted() {
@@ -68,7 +68,7 @@ Vue.component('App', {
             })
             .then((res) => {
                 console.log(res)
-                this.info = res
+                this.info = res.data
                 this.loading = false
             })
             .catch((err) => {
