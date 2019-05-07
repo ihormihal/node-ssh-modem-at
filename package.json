@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "config": {
+    "port": "5000"
+  },
   "scripts": {
-    "test": "npm run connect"
+    "build": "gulp scss",
+    "watch": "gulp watch"
   },
   "repository": {
     "type": "git",
@@ -17,6 +21,15 @@
   },
   "homepage": "https://github.com/ihormihal/node-ssh-modem-at#readme",
   "dependencies": {
-    "node-ssh": "^6.0.0"
+    "node-ssh": "^6.0.0",
+    "node-static": "^0.7.11"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^6.1.0",
+    "gulp-concat-css": "^3.1.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2"
   }
 }

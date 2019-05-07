@@ -1,0 +1,17 @@
+.page {
+    &.page-login {
+        display: flex;
+        background-color: $colorPrimary;
+        align-items: center;
+        justify-content: center;
+
+        form {
+            padding: $gap*2 $gap*4;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: $boxRadius;
+            input {
+                color: #fff;
+            }
+        }
+    }
+}

@@ -1,28 +1,39 @@
-const node_ssh = require('node-ssh')
-const ssh = new node_ssh()
+"use strict"
+const http = require('http')
+const nodeStatic = require('node-static')
+const pkg = require('./package.json')
 
-let monsc = "chat -V -t 5 'ABORT' 'ERROR' 'ABORT' 'NO CARRIER' '' 'AT\\^MONSC' 'OK' > /dev/ttyUSB0 < /dev/ttyUSB0"
- 
-ssh.connect({
-  host: '192.168.1.1',
-  username: 'root',
-  password: '1989'
-})
-.then(() => {
-    return ssh.execCommand(monsc)
-})
-.then((result) => {
-    console.log('RESULT')
-    console.log(result)
-})
-.catch((err) => {
-    console.log('ERROR')
-    console.log(err)
-})
 
-let result = { 
-    code: 0,
-    signal: undefined,
-    stdout: '',
-    stderr: 'AT^MONSC\n\n\n^MONSC: WCDMA,255,06,10612,149,47B7E57,3459,-73,-63,-10,6,34014\n\n\n\nOK'
+const apiRequest = (request, response) => {
+
+    let content = {
+        requestUrl: request.url,
+        method: request.method,
+        body: request.body
+    }
+
+    if(/^\/api\/connect/.test(request.url)){
+        console.log('connect')
+    }
+    else if(/^\/api\/info/.test(request.url)){
+        console.log('info')
+    }
+
+    response.writeHead(200, { 'Content-Type': 'application/json' })
+    response.end(JSON.stringify(content), 'utf-8')
 }
+
+var fileServer = new nodeStatic.Server('./public')
+http.createServer((request, response) => {
+
+    if(/^\/api/.test(request.url)){
+        apiRequest(request, response)
+    }else{
+        request.addListener('end', () => {
+            fileServer.serve(request, response)
+        }).resume()
+    }
+
+}).listen(pkg.config.port);
+
+console.log(`Server running at http://localhost:${pkg.config.port}`);

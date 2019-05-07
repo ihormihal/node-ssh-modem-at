@@ -1,0 +1,60 @@
+/*grid*/
+$gap: 16px;
+$columns: 12;
+$max: 1200px;
+$max-wide: 96%;
+
+/*breackpoints*/
+$xs  : 361px;
+$port: 412px;
+$land: 600px;
+$sm  : 769px;
+$md  : 1008px;
+$lg  : 1265px;
+$xl  : 1904px;
+$xxl : 2560px;
+
+$fontPrimary: 'Roboto Slab', sans-serif;
+$fs0 : 72px;
+$fs1 : 48px;
+$fs2 : 36px;
+$fs3 : 24px;
+$fs4 : 18px;
+$fs5 : 16px;
+$fs6 : 13px;
+$fs7 : 10px;
+
+/* sizes */
+$boxRadius: 4px; //cards
+$btnBorderRadius: 4px;
+$inputBorderRadius: 4px;
+$inputShadow: false;
+
+/* form control && button sizes */
+$controlXS: 24px;
+$controlSM: 30px;
+$controlMD: 36px;
+$controlLG: 48px;
+$controlXL: 64px;
+
+/* form control && button FONT sizes */
+$textXS: 10px;
+$textSM: 12px;
+$textMD: 14px;
+$textLG: 18px;
+$textXL: 24px;
+
+$colorBlack: #222222;
+$colorGrey: #7a7a7a;
+$colorLight: #d7d7d7;
+
+$colorPrimary: #2196f3;
+$colorDanger: #f44336;
+$colorWarning: #ff9800;
+$colorSuccess: #4caf50;
+
+$colorPrimaryLight: #2196f3;
+$colorPrimaryDark: #282e3c;
+
+
+$placeholderColor: $colorLight;
