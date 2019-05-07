@@ -20,7 +20,7 @@ ssh.connect({
     console.log(err)
 })
 
-let result = { 
+let info = { 
     code: 0,
     signal: undefined,
     stdout: '',

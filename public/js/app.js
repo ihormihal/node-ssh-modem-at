@@ -1,6 +1,7 @@
 Vue.component('App', {
     template: `<main>
-        <Login />
+        <Login v-if="!connected" />
+        <Info :info="info" v-if="connected" />
         <div v-if="loading" class="page-loader">
             <div class="spinner">
                 <div class="double-bounce1"></div>
@@ -10,16 +11,21 @@ Vue.component('App', {
     </main>`,
     data() {
         return {
-            loading: false
+            connected: false,
+            loading: false,
+            info: null
         }
     },
     mounted() {
         this.$eventHub.$on('CONNECT', (credentials) => {
-            this.connect(credentials)
+            this.connectHost(credentials)
+        })
+        this.$eventHub.$on('GET_INFO', (credentials) => {
+            this.getInfo()
         })
     },
     methods: {
-        connect(data) {
+        connectHost(data) {
             this.loading = true
             fetch( 'http://localhost:5000/api/connect', {
                 method: 'POST',
@@ -29,8 +35,28 @@ Vue.component('App', {
                 },
                 body: JSON.stringify(data)
             }).then((res) => {
+                this.connected = true
                 this.loading = false
             })
         },
+        getInfo() {
+            this.loading = true
+            fetch('http://localhost:5000/api/info', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((res) => {
+                this.loading = false
+                return res.json()
+            })
+            .then((res) => {
+                console.log(res)
+                this.info = res
+                this.loading = false
+            })
+        }
     }
 })

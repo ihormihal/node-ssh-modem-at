@@ -24,7 +24,6 @@ Vue.component('Login', {
     },
     methods: {
         connectHost() {
-            console.log('emit CONNECT')
             this.$eventHub.$emit('CONNECT', {
                 host: this.host,
                 user: this.user,
