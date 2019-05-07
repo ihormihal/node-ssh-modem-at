@@ -5,7 +5,7 @@ Vue.component('Login', {
                 <input class="mtr white" type="text" v-model="host" />
             </div>
             <div class="form-group">
-                <input class="mtr white" type="text" v-model="user" />
+                <input class="mtr white" type="text" v-model="username" />
             </div>
             <div class="form-group">
                 <input class="mtr white" type="password" v-model="password" />
@@ -17,16 +17,16 @@ Vue.component('Login', {
     </div>`,
     data() {
         return {
-            host: "192.168.1.1",
-            user: 'root',
-            password: '1989'
+            host: "192.168.2.73",
+            username: 'wildfly',
+            password: 'wildfly12'
         }
     },
     methods: {
         connectHost() {
             this.$eventHub.$emit('CONNECT', {
                 host: this.host,
-                user: this.user,
+                username: this.username,
                 password: this.password
             })
         }

@@ -1,3 +1,10 @@
+function handleErrors(response) {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    return response;
+}
+
 Vue.component('App', {
     template: `<main>
         <Login v-if="!connected" />
@@ -34,8 +41,14 @@ Vue.component('App', {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            }).then((res) => {
+            })
+            .then(handleErrors)
+            .then((res) => {
                 this.connected = true
+                this.loading = false
+            })
+            .catch((err) => {
+                console.log(err)
                 this.loading = false
             })
         },
@@ -48,6 +61,7 @@ Vue.component('App', {
                     'Content-Type': 'application/json'
                 }
             })
+            .then(handleErrors)
             .then((res) => {
                 this.loading = false
                 return res.json()
@@ -55,6 +69,10 @@ Vue.component('App', {
             .then((res) => {
                 console.log(res)
                 this.info = res
+                this.loading = false
+            })
+            .catch((err) => {
+                console.log(err)
                 this.loading = false
             })
         }

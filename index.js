@@ -2,8 +2,19 @@
 const http = require('http')
 const nodeStatic = require('node-static')
 const pkg = require('./package.json')
+const utils = require('./api/utils')
+const node_ssh = require('node-ssh')
+const ssh = new node_ssh()
 
-let info = { 
+const delay = (timeout, data) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(data || {ok: true, data: null })
+        }, timeout || 0)
+    })
+}
+
+let out = {
     code: 0,
     signal: undefined,
     stdout: '',
@@ -12,25 +23,29 @@ let info = {
 
 const routes = {
     connectHost(credentials) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve({ok: true, data: credentials})
-            }, 2000)
-        })
+        return delay(500)
+        // return ssh.connect(credentials)
+        //     .then((res) => 'CONNECTED')
     },
     getInfo() {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve({ok: true, data: info})
-            }, 1000)
+        return delay(500, {
+            ok: true,
+            data: utils.parseMONSC(out.stderr)
         })
+        return ssh.execCommand('ls')
     }
 }
 
+
+
+
+
+
+
 const apiRequest = (request, response) => {
 
-    const writeResponse = (data) => {
-        response.writeHead(200, { 'Content-Type': 'application/json' })
+    const writeResponse = (data, isError) => {
+        response.writeHead(isError ? 500 : 200, { 'Content-Type': 'application/json' })
         response.end(JSON.stringify(data), 'utf-8')
     }
 
@@ -47,11 +62,17 @@ const apiRequest = (request, response) => {
                 .then((res) => {
                     writeResponse(res)
                 })
+                .catch((err) => {
+                    writeResponse(err, true)
+                })
         }
         else if(/^\/api\/info/.test(request.url)){
             routes.getInfo()
                 .then((res) => {
                     writeResponse(res)
+                })
+                .catch((err) => {
+                    writeResponse(err, true)
                 })
         }
     })
