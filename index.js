@@ -1,50 +1,9 @@
 "use strict"
+
 const http = require('http')
 const nodeStatic = require('node-static')
 const pkg = require('./package.json')
-const utils = require('./api/utils')
-const cells = require('./api/cells')
-const node_ssh = require('node-ssh')
-const ssh = new node_ssh()
-
-const delay = (timeout, data) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(data || {ok: true, data: null })
-        }, timeout || 0)
-    })
-}
-
-let out = {
-    code: 0,
-    signal: undefined,
-    stdout: '',
-    stderr: 'AT^MONSC\n\n\n^MONSC: WCDMA,255,06,10612,149,1001,1001,-73,-63,-10,6,34014\n\n\n\nOK'
-}
-
-const routes = {
-    connectHost(credentials) {
-        return delay(500)
-        // return ssh.connect(credentials)
-        //     .then((res) => 'CONNECTED')
-    },
-    getInfo() {
-        return delay(500, {
-            ok: true,
-            data: utils.parseMONSC(out.stderr)
-        })
-        return ssh.execCommand('ls')
-    },
-    getCells(filter) {
-        return cells.getCells(filter)
-    }
-}
-
-
-
-
-
-
+const routes = require('./api/routes')
 
 const apiRequest = (request, response) => {
 
@@ -70,8 +29,9 @@ const apiRequest = (request, response) => {
                     writeResponse(err, true)
                 })
         }
-        else if(/^\/api\/info/.test(request.url)){
-            routes.getInfo()
+
+        else if(/^\/api\/cell\/current/.test(request.url)){
+            routes.getCurrentCell()
                 .then((res) => {
                     writeResponse(res)
                 })
@@ -79,8 +39,9 @@ const apiRequest = (request, response) => {
                     writeResponse(err, true)
                 })
         }
-        else if(/^\/api\/cells/.test(request.url)){
-            routes.getCells(body)
+
+        else if(/^\/api\/cell\/nearby/.test(request.url)){
+            routes.getNearbyCells()
                 .then((res) => {
                     writeResponse(res)
                 })

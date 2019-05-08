@@ -1,74 +1,112 @@
-Vue.component('Info', {
+Vue.component('CellInfo', {
     template: `<div class="container page page-info">
+        <button class="btn btn-primary" @click="getCurrent()">Get current cell info</button>
+        <button class="btn btn-primary" @click="getNearby()">Get nearby cells</button>
         <div class="row">
-            <div class="col"><Map :cells="info.cells" /></div>
+            <div class="col"><!--Map :cells="nearby" /--></div>
             <div class="col box">
-                <Signal :rscp="info.RSCP" :rxlev="info.RXLEV" />
+                <Signal :rscp="current.RSCP" :rxlev="current.RXLEV" />
                 <div class="info-table">
                     <dl>
                         <dt>RAT</dt>
-                        <dd>{{info.RAT}}</dd>
+                        <dd>{{current.RAT}}</dd>
                     </dl>
                     <dl>
                         <dt>MCC</dt>
-                        <dd>{{info.MCC}}</dd>
+                        <dd>{{current.MCC}}</dd>
                     </dl>
                     <dl>
                         <dt>MNC</dt>
-                        <dd>{{info.MNC}} (<span v-if="info.MNC == '06'">LifeCell</span><span v-if="info.MNC == '03'">KyivStar</span><span v-if="info.MNC == '01'">MTS</span>)</dd>
+                        <dd>{{current.MNC}} (<span v-if="current.MNC == '06'">LifeCell</span><span v-if="current.MNC == '03'">KyivStar</span><span v-if="current.MNC == '01'">MTS</span>)</dd>
                     </dl>
                     <dl>
                         <dt>ARFCN</dt>
-                        <dd>{{info.ARFCN}}</dd>
+                        <dd>{{current.ARFCN}}</dd>
                     </dl>
                     <dl>
                         <dt>Primary Scrambling Code</dt>
-                        <dd>{{info.PSC}}</dd>
+                        <dd>{{current.PSC}}</dd>
                     </dl>
                     <dl>
                         <dt>Cell ID</dt>
-                        <dd>{{info.CELL_ID}}</dd>
+                        <dd>{{current.CELL_ID}}</dd>
                     </dl>
                     <dl>
                         <dt>Location Area Code</dt>
-                        <dd>{{info.LAC}}</dd>
+                        <dd>{{current.LAC}}</dd>
                     </dl>
                     <dl>
                         <dt>Received Signal Code Power</dt>
-                        <dd>{{info.RSCP}} dBm</dd>
+                        <dd>{{current.RSCP}} dBm</dd>
                     </dl>
                     <dl>
                         <dt>Receiving Signal Strength</dt>
-                        <dd>{{info.RXLEV}} dBm</dd>
+                        <dd>{{current.RXLEV}} dBm</dd>
                     </dl>
                     <dl>
                         <dt>Eb/N0 (Carrier-to-noise ratio)</dt>
-                        <dd>{{info.EC_N0}} dB</dd>
+                        <dd>{{current.EC_N0}} dB</dd>
                     </dl>
                     <dl>
                         <dt>Discontinuous Reception Cycle Length</dt>
-                        <dd>{{info.DRX}}</dd>
+                        <dd>{{current.DRX}}</dd>
                     </dl>
                     <dl>
                         <dt>UTRAN Registration Area Identity</dt>
-                        <dd>{{info.URA}}</dd>
+                        <dd>{{current.URA}}</dd>
+                    </dl>
+                </div>
+                <div v-for="cell in nearby" class="info-table">
+                    <dl>
+                        <dt>ARFCN</dt>
+                        <dd>{{cell.ARFCN}}</dd>
+                    </dl>
+                    <dl>
+                        <dt>Primary Scrambling Code</dt>
+                        <dd>{{cell.PSC}}</dd>
+                    </dl>
+                    <dl>
+                        <dt>Cell ID</dt>
+                        <dd>{{cell.CELL_ID}}</dd>
+                    </dl>
+                    <dl>
+                        <dt>Location Area Code</dt>
+                        <dd>{{cell.LAC}}</dd>
+                    </dl>
+                    <dl>
+                        <dt>Received Signal Code Power</dt>
+                        <dd>{{cell.RSCP}} dBm</dd>
+                    </dl>
+                    <dl>
+                        <dt>Receiving Signal Strength</dt>
+                        <dd>{{cell.RXLEV}} dBm</dd>
+                    </dl>
+                    <dl>
+                        <dt>Eb/N0 (Carrier-to-noise ratio)</dt>
+                        <dd>{{cell.EC_N0}} dB</dd>
                     </dl>
                 </div>
             </div>
         </div>
     </div>`,
     props: {
-        info: Object
+        current: Object,
+        nearby: Array
     },
     data() {
         return {}
     },
     mounted() {
-        this.getInfo()
+        // setInterval(this.getCurrent, 2000)
+        // this.getCurrent()
+        // this.getNearby()
     },
     methods: {
-        getInfo() {
-            this.$eventHub.$emit('GET_INFO')
+        getCurrent() {
+            this.$eventHub.$emit('GET_CURRENT_CELL')
+        },
+        getNearby() {
+            this.$eventHub.$emit('GET_NEARBY_CELLS')
         }
     }
 })

@@ -7,8 +7,8 @@ function handleErrors(response) {
 
 Vue.component('App', {
     template: `<main>
-        <!--Login v-if="!connected" /-->
-        <Info :info="info" />
+        <Login v-if="!connected" />
+        <CellInfo v-if="connected" :current="currentCell" :nearby="nearbyCells" />
         <div v-if="loading" class="page-loader">
             <div class="spinner">
                 <div class="double-bounce1"></div>
@@ -20,16 +20,19 @@ Vue.component('App', {
         return {
             connected: false,
             loading: false,
-            info: {}
+            currentCell: {},
+            nearbyCells: {}
         }
     },
     mounted() {
-        this.getInfo()
         this.$eventHub.$on('CONNECT', (credentials) => {
             this.connectHost(credentials)
         })
-        this.$eventHub.$on('GET_INFO', (credentials) => {
-            this.getInfo()
+        this.$eventHub.$on('GET_CURRENT_CELL', () => {
+            this.getCurrentCell()
+        })
+        this.$eventHub.$on('GET_NEARBY_CELLS', () => {
+            this.getNearbyCells()
         })
     },
     methods: {
@@ -53,10 +56,9 @@ Vue.component('App', {
                 this.loading = false
             })
         },
-        getInfo() {
-            console.log('getInfo')
+        getCurrentCell() {
             this.loading = true
-            fetch('http://localhost:5000/api/info', {
+            fetch('http://localhost:5000/api/cell/current', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -69,31 +71,33 @@ Vue.component('App', {
                 return res.json()
             })
             .then((res) => {
-                this.info = res.data
-                console.log('filter1')
-                this.getCells(this.info)
+                this.currentCell = res
             })
             .catch((err) => {
                 console.log(err)
                 this.loading = false
             })
         },
-        getCells(filter) {
-            console.log('filter2')
-            fetch('http://localhost:5000/api/cells', {
-                method: 'POST',
+        getNearbyCells() {
+            this.loading = true
+            fetch('http://localhost:5000/api/cell/nearby', {
+                method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(filter)
+                }
             })
             .then(handleErrors)
             .then((res) => {
+                this.loading = false
                 return res.json()
             })
-            .then((cells) => {
-                this.info = { ...this.info, cells }
+            .then((res) => {
+                this.nearbyCells = res
+            })
+            .catch((err) => {
+                console.log(err)
+                this.loading = false
             })
         }
     }

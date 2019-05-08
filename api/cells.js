@@ -10,7 +10,7 @@ module.exports = {
             let index = 0
             csv.fromStream(stream, {headers : ["LAC", "CELL_ID", "LAT", "LNG"]})
                 .on("data", (data) => {
-                    console.log(data)
+                    // console.log(data)
                     if(index == 0){
                         index++
                         return

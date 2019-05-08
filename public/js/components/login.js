@@ -17,9 +17,9 @@ Vue.component('Login', {
     </div>`,
     data() {
         return {
-            host: "192.168.2.73",
-            username: 'wildfly',
-            password: 'wildfly12'
+            host: "192.168.1.1",
+            username: 'root',
+            password: '1989'
         }
     },
     methods: {
