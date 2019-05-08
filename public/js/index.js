@@ -36,3 +36,16 @@ Vue.filter('datetime', function(value) {
         return formatDate(value, 'YYYY/MM/DD hh:mm')
     }
 })
+
+Vue.filter('operator', function(mnc) {
+    switch(mnc) {
+        case '01':
+            return 'Vodafone'
+        case '03':
+            return 'Kyivstar'
+        case '06':
+            return 'Lifecell'
+        default:
+            return mnc
+    }
+})

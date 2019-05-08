@@ -14,12 +14,12 @@ const delay = (timeout, data) => {
 
 module.exports = {
     connectHost(credentials) {
-        return delay(500)
+        // return delay(500)
         return ssh.connect(credentials)
             .then((res) => 'CONNECTED')
     },
     getCurrentCell() {
-        return delay(500, {"RAT":"WCDMA","MCC":"255","MNC":"06","ARFCN":"10612","PSC":"149","CELL_ID":"47B7E57","LAC":"3459","RSCP":"-76","RXLEV":"-65","EC_N0":"-11","DRX":"6","URA":"6"})
+        // return delay(500, {"RAT":"WCDMA","MCC":"255","MNC":"06","ARFCN":"10612","PSC":"149","CELL_ID":"47B7E57","LAC":"3459","RSCP":"-76","RXLEV":"-65","EC_N0":"-11","DRX":"6","URA":"6"})
         let monsc = "chat -V -t 5 'ABORT' 'ERROR' 'ABORT' 'NO CARRIER' '' 'AT\\^MONSC' 'OK' > /dev/ttyUSB0 < /dev/ttyUSB0"
         return ssh.execCommand(monsc)
             .then((res) => {
@@ -28,7 +28,7 @@ module.exports = {
             })
     },
     getNearbyCells() {
-        return delay(500, [{"RAT":"WCDMA","ARFCN":"10612","PSC":"42","RSCP":"-77","EC_N0":"-10"},{"RAT":"WCDMA","ARFCN":"10612","PSC":"503","RSCP":"-81","EC_N0":"-15"}])
+        // return delay(500, [{"RAT":"WCDMA","ARFCN":"10612","PSC":"42","RSCP":"-77","EC_N0":"-10"},{"RAT":"WCDMA","ARFCN":"10612","PSC":"503","RSCP":"-81","EC_N0":"-15"}])
         let monsc = "chat -V -t 5 'ABORT' 'ERROR' 'ABORT' 'NO CARRIER' '' 'AT\\^MONNC' 'OK' > /dev/ttyUSB0 < /dev/ttyUSB0"
         return ssh.execCommand(monsc)
             .then((res) => {

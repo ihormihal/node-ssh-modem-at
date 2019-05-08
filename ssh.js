@@ -6,8 +6,7 @@ let monsc = "chat -V -t 5 'ABORT' 'ERROR' 'ABORT' 'NO CARRIER' '' 'AT\\^MONNC' '
 
 let res = 'AT^MONNC\n\n\n^MONNC: WCDMA,10612,42,-79,-13\n\n^MONNC: WCDMA,10612,503,-82,-16\n\n^MONNC: WCDMA,10612,157,-85,-19\n\n\n\nOK'
 
-console.log(utils.parseMONNC(res))
-/*ssh.connect({
+ssh.connect({
     host: "192.168.1.1",
     username: 'root',
     password: '1989'
@@ -17,16 +16,12 @@ console.log(utils.parseMONNC(res))
 })
 .then((res) => {
     console.log(res)
-    return utils.parseMONSC(res.stderr)
-})
-.then((result) => {
-    console.log('RESULT')
-    console.log(result)
+    // return utils.parseMONSC(res.stderr)
 })
 .catch((err) => {
     console.log('ERROR')
     console.log(err)
-})*/
+})
 
 // let info = { 
 //     code: 0,

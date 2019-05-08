@@ -1,91 +1,96 @@
+Vue.component('InfoCard', {
+    template: `<div class="card">
+        <Signal :rat="cell.RAT" :rscp="cell.RSCP" :rxlev="cell.RXLEV" />
+        <div class="operator-logo">
+            <img v-if="cell.MNC == '01'" src="img/logo-vadafone.png" />
+            <img v-if="cell.MNC == '03'" src="img/logo-kyivstar.png" />
+            <img v-if="cell.MNC == '06'" src="img/logo-lifecell.png" />
+        </div>
+        <table class="info-table">
+            <tr v-if="cell.RAT">
+                <td>Technology</td>
+                <td>{{cell.RAT}}</td>
+            </tr>
+            <tr v-if="cell.MCC">
+                <td>MCC</td>
+                <td>{{cell.MCC}}</td>
+            </tr>
+            <tr v-if="cell.MNC">
+                <td>MNC</td>
+                <td>{{cell.MNC}}</td>
+            </tr>
+            <tr v-if="cell.BAND">
+                <td>BAND</td>
+                <td>{{cell.BAND}}</td>
+            </tr>
+            <tr v-if="cell.ARFCN">
+                <td>ARFCN</td>
+                <td>{{cell.ARFCN}}</td>
+            </tr>
+            <tr v-if="cell.BSIC">
+                <td>BSIC</td>
+                <td>{{cell.BSIC}}</td>
+            </tr>
+            <tr v-if="cell.PSC">
+                <td>Primary Scrambling Code</td>
+                <td>{{cell.PSC}}</td>
+            </tr>
+            <tr v-if="cell.CELL_ID">
+                <td>Cell ID</td>
+                <td>{{cell.CELL_ID}}</td>
+            </tr>
+            <tr v-if="cell.LAC">
+                <td>Location Area Code</td>
+                <td>{{cell.LAC}}</td>
+            </tr>
+            <tr v-if="cell.RXLEV">
+                <td>Receiving Signal Strength</td>
+                <td>{{cell.RXLEV}} dBm</td>
+            </tr>
+            <tr v-if="cell.RSCP">
+                <td>Received Signal Code Power</td>
+                <td>{{cell.RSCP}} dBm</td>
+            </tr>
+            <tr v-if="cell.EC_N0">
+                <td>EC/N0 (Bit energy / Noise)</td>
+                <td>{{cell.EC_N0}} dB</td>
+            </tr>
+            <tr v-if="cell.DRX">
+                <td>Discontinuous Reception Cycle Length</td>
+                <td>{{cell.DRX}}</td>
+            </tr>
+            <tr v-if="cell.URA">
+                <td>UTRAN Registration Area Identity</td>
+                <td>{{cell.URA}}</td>
+            </tr>
+            <tr v-if="cell.RX_QUALITY">
+                <td>Quality of Reception</td>
+                <td>{{cell.RX_QUALITY}}</td>
+            </tr>
+            <tr v-if="cell.TA">
+                <td>Timing Advance</td>
+                <td>{{cell.TA}}</td>
+            </tr>
+        </table>
+    </div>`,
+    props: {
+        cell: Object
+    }
+})
+
+
 Vue.component('CellInfo', {
     template: `<div class="container page page-info">
-        <button class="btn btn-primary" @click="getCurrent()">Get current cell info</button>
-        <button class="btn btn-primary" @click="getNearby()">Get nearby cells</button>
-        <div class="row">
-            <div class="col"><!--Map :cells="nearby" /--></div>
-            <div class="col box">
-                <Signal :rscp="current.RSCP" :rxlev="current.RXLEV" />
-                <div class="info-table">
-                    <dl>
-                        <dt>RAT</dt>
-                        <dd>{{current.RAT}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>MCC</dt>
-                        <dd>{{current.MCC}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>MNC</dt>
-                        <dd>{{current.MNC}} (<span v-if="current.MNC == '06'">LifeCell</span><span v-if="current.MNC == '03'">KyivStar</span><span v-if="current.MNC == '01'">MTS</span>)</dd>
-                    </dl>
-                    <dl>
-                        <dt>ARFCN</dt>
-                        <dd>{{current.ARFCN}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>Primary Scrambling Code</dt>
-                        <dd>{{current.PSC}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>Cell ID</dt>
-                        <dd>{{current.CELL_ID}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>Location Area Code</dt>
-                        <dd>{{current.LAC}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>Received Signal Code Power</dt>
-                        <dd>{{current.RSCP}} dBm</dd>
-                    </dl>
-                    <dl>
-                        <dt>Receiving Signal Strength</dt>
-                        <dd>{{current.RXLEV}} dBm</dd>
-                    </dl>
-                    <dl>
-                        <dt>Eb/N0 (Carrier-to-noise ratio)</dt>
-                        <dd>{{current.EC_N0}} dB</dd>
-                    </dl>
-                    <dl>
-                        <dt>Discontinuous Reception Cycle Length</dt>
-                        <dd>{{current.DRX}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>UTRAN Registration Area Identity</dt>
-                        <dd>{{current.URA}}</dd>
-                    </dl>
-                </div>
-                <div v-for="cell in nearby" class="info-table">
-                    <dl>
-                        <dt>ARFCN</dt>
-                        <dd>{{cell.ARFCN}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>Primary Scrambling Code</dt>
-                        <dd>{{cell.PSC}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>Cell ID</dt>
-                        <dd>{{cell.CELL_ID}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>Location Area Code</dt>
-                        <dd>{{cell.LAC}}</dd>
-                    </dl>
-                    <dl>
-                        <dt>Received Signal Code Power</dt>
-                        <dd>{{cell.RSCP}} dBm</dd>
-                    </dl>
-                    <dl>
-                        <dt>Receiving Signal Strength</dt>
-                        <dd>{{cell.RXLEV}} dBm</dd>
-                    </dl>
-                    <dl>
-                        <dt>Eb/N0 (Carrier-to-noise ratio)</dt>
-                        <dd>{{cell.EC_N0}} dB</dd>
-                    </dl>
-                </div>
+        <div class="actions box">
+            <button class="btn btn-primary" @click="getCurrent()">Get current cell info</button>
+            <button class="btn btn-primary" @click="getNearby()">Get nearby cells</button>
+        </div>
+        <div class="row box">
+            <div v-if="current.RAT" class="col current-cell">
+                <InfoCard :cell="current" />
+            </div>
+            <div v-for="cell in nearby" class="col nearby-cell">
+                <InfoCard :cell="cell" />
             </div>
         </div>
     </div>`,

@@ -16,25 +16,43 @@
     }
 }
 
-.info-table {
-    font-size: 12px;
-    dl {
-        border-bottom: 1px dotted $colorGrey;
-        dt, dd { display: inline-block; }
-        dt {
-            width: 240px;
-            color: $colorGrey;
-        }
-        dd {
-
+.card {
+    padding: $gap;
+    .operator-logo {
+        height: 32px;
+        padding: $gap 0;
+        img { height: 100%; }
+    }
+    .info-table {
+        font-size: 12px;
+        border: none;
+        width: 100%;
+        tr {
+            td:first-child {
+                color: $colorGrey;
+                padding: 4px 4px 4px 0;
+            }
+            td:last-child {
+                text-align: right;
+                padding: 4px 0 4px 4px;
+            }
         }
     }
 }
+
 
 .signal {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+    position: relative;
+    .type {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 22px;
+        color: $colorPrimary;
+    }
     .values {
         padding-left: 12px;
         .rxlev {
