@@ -17,14 +17,64 @@
 }
 
 .info-table {
-
+    font-size: 12px;
     dl {
+        border-bottom: 1px dotted $colorGrey;
         dt, dd { display: inline-block; }
         dt {
-            width: 200px;
+            width: 240px;
+            color: $colorGrey;
         }
         dd {
 
         }
     }
+}
+
+.signal {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    .values {
+        padding-left: 12px;
+        .rxlev {
+            font-size: 32px;
+            font-weight: 500;
+            span { font-size: 14px; }
+        }
+        .rscp {
+            font-size: 18px;
+            color: $colorGrey;
+            span { font-size: 12px; }
+        }
+    } 
+}
+.piles {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    .pile {
+        width: 7px;
+        margin-right: 3px;
+        height: 7px;
+        background-color: $colorLight;
+        &.level-1 { background-color: #E53935; }
+        &.level-2 { background-color: #F4511E; }
+        &.level-3 { background-color: #FB8C00; }
+        &.level-4 { background-color: #FFB300; }
+        &.level-5 { background-color: #FDD835; }
+        &.level-6 { background-color: #FFEB3B; }
+        &.level-7 { background-color: #FFEB3B; }
+        &.level-8 { background-color: #C0CA33; }
+        &.level-9 { background-color: #4CAF50; }
+        &.level-10{ background-color: #43A047; }
+    }
+    @for $i from 1 through 10 {
+        .pile:nth-child(#{$i}) { height: 7px * $i; }
+    }
+}
+#gmap {
+    height: 500px;
+    min-width: 600px;
+    width: 100%;
 }

@@ -3,6 +3,7 @@ const http = require('http')
 const nodeStatic = require('node-static')
 const pkg = require('./package.json')
 const utils = require('./api/utils')
+const cells = require('./api/cells')
 const node_ssh = require('node-ssh')
 const ssh = new node_ssh()
 
@@ -18,7 +19,7 @@ let out = {
     code: 0,
     signal: undefined,
     stdout: '',
-    stderr: 'AT^MONSC\n\n\n^MONSC: WCDMA,255,06,10612,149,47B7E57,3459,-73,-63,-10,6,34014\n\n\n\nOK'
+    stderr: 'AT^MONSC\n\n\n^MONSC: WCDMA,255,06,10612,149,1001,1001,-73,-63,-10,6,34014\n\n\n\nOK'
 }
 
 const routes = {
@@ -33,6 +34,9 @@ const routes = {
             data: utils.parseMONSC(out.stderr)
         })
         return ssh.execCommand('ls')
+    },
+    getCells(filter) {
+        return cells.getCells(filter)
     }
 }
 
@@ -68,6 +72,15 @@ const apiRequest = (request, response) => {
         }
         else if(/^\/api\/info/.test(request.url)){
             routes.getInfo()
+                .then((res) => {
+                    writeResponse(res)
+                })
+                .catch((err) => {
+                    writeResponse(err, true)
+                })
+        }
+        else if(/^\/api\/cells/.test(request.url)){
+            routes.getCells(body)
                 .then((res) => {
                     writeResponse(res)
                 })

@@ -20,10 +20,11 @@ Vue.component('App', {
         return {
             connected: false,
             loading: false,
-            info: {"RAT":"WCDMA","MCC":"255","MNC":"06","ARFCN":"10612","PSC":"149","CELL_ID":"47B7E57","LAC":"3459","RSCP":"-73","RXLEV":"-63","EC_N0":"-10","DRX":"6","URA":"6"}
+            info: {}
         }
     },
     mounted() {
+        this.getInfo()
         this.$eventHub.$on('CONNECT', (credentials) => {
             this.connectHost(credentials)
         })
@@ -53,6 +54,7 @@ Vue.component('App', {
             })
         },
         getInfo() {
+            console.log('getInfo')
             this.loading = true
             fetch('http://localhost:5000/api/info', {
                 method: 'GET',
@@ -67,13 +69,31 @@ Vue.component('App', {
                 return res.json()
             })
             .then((res) => {
-                console.log(res)
                 this.info = res.data
-                this.loading = false
+                console.log('filter1')
+                this.getCells(this.info)
             })
             .catch((err) => {
                 console.log(err)
                 this.loading = false
+            })
+        },
+        getCells(filter) {
+            console.log('filter2')
+            fetch('http://localhost:5000/api/cells', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(filter)
+            })
+            .then(handleErrors)
+            .then((res) => {
+                return res.json()
+            })
+            .then((cells) => {
+                this.info = { ...this.info, cells }
             })
         }
     }

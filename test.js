@@ -1,3 +1,6 @@
+const fs = require('fs')
+const csv = require('fast-csv')
+
 let out = {
     code: 0,
     signal: undefined,
@@ -53,4 +56,32 @@ const parseMONSC = (res) => {
     return info
 }
 
-parseMONSC(out)
+// parseMONSC(out)
+
+const getCells = (lac, cellid) => {
+    const stream = fs.createReadStream("./api/db_lifecell.csv")
+    let rows = []
+    let index = 0
+    csv.fromStream(stream, {headers : ["LAC", "CELL_ID", "LNG", "LAT"]})
+        .on("data", (data) => {
+            if(index == 0){
+                index++
+                return
+            } 
+            if(lac && !cellid && data.LAC == lac){
+                rows.push(data)
+            }
+            else if(cellid && !lac && data.CELL_ID == cellid){
+                rows.push(data)
+            }
+            else if(cellid && lac && data.CELL_ID == cellid && data.LAC == lac){
+                rows.push(data)
+            }
+            index++
+        })
+        .on("end", () => {
+            console.log(rows)
+        })
+}
+
+getCells(null, 7057)

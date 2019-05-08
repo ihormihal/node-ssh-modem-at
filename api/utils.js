@@ -1,4 +1,5 @@
 module.exports = {
+
     parseMONSC(res) {
         let matches = res.match(/MONSC:(.*)?/g)
         if(!matches.length) return {};

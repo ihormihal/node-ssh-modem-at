@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ihormihal/node-ssh-modem-at#readme",
   "dependencies": {
+    "fast-csv": "^2.5.0",
     "node-ssh": "^6.0.0",
     "node-static": "^0.7.11"
   },
